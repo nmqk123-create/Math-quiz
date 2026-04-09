@@ -1,0 +1,432 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>三年級數學小測驗：分數的認識與加減 (第三回)</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="數學測驗3">
+    <link rel="apple-touch-icon" href="https://api.dicebear.com/7.x/shapes/svg?seed=math3&backgroundColor=6c2c78">
+
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+            background-color: #f9f4f9; /* 淡紫色背景 */
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            -webkit-tap-highlight-color: transparent; 
+        }
+        h1 {
+            text-align: center;
+            color: #6c2c78; /* 深紫色 */
+            font-size: 1.5em; 
+            margin-top: 30px; 
+        }
+        .instruction {
+            background-color: #fff3cd;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border-left: 5px solid #ffc107;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+        .question-block {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+        h3 {
+            color: #531f5c;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 8px;
+            font-size: 1.15em;
+            margin-top: 0;
+        }
+        .q-title {
+            font-size: 1.05em;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .options label {
+            display: block;
+            margin: 12px 0; 
+            cursor: pointer;
+            padding: 10px 12px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            transition: background-color 0.2s;
+        }
+        .options label:active {
+            background-color: #e9ecef;
+        }
+        .options input[type="radio"] {
+            transform: scale(1.2);
+            margin-right: 8px;
+        }
+        .options input[type="radio"]:checked + span {
+            font-weight: bold;
+            color: #6c2c78;
+        }
+        input[type="text"] {
+            font-size: 1.1em;
+            padding: 8px 5px;
+            width: 70px;
+            text-align: center;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            margin: 0 5px;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #6c2c78;
+            box-shadow: 0 0 5px rgba(108, 44, 120, 0.3);
+        }
+        .fraction-wrapper {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0 5px;
+        }
+        .fraction-wrapper input[type="text"] {
+            width: 40px;
+            margin: 0 3px;
+        }
+        .fraction-slash {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #555;
+            margin: 0 2px;
+        }
+        .calc-row {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #9c27b0; /* 紫色按鈕 */
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 30px;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 6px rgba(156, 39, 176, 0.3);
+            transition: transform 0.1s, background-color 0.2s;
+        }
+        button:active {
+            background-color: #7b1fa2;
+            transform: translateY(2px);
+        }
+        #result-display {
+            display: none;
+            text-align: center;
+            font-size: 1.2em;
+            line-height: 1.5;
+            font-weight: bold;
+            margin-bottom: 40px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .correct-text { color: #28a745; font-weight: bold; margin-left: 5px;}
+        .wrong-text { color: #dc3545; font-weight: bold; margin-left: 5px;}
+    </style>
+</head>
+<body>
+
+    <h1>🟪 國小三年級數學小測驗 (第三回)</h1>
+    
+    <div class="instruction">
+        💡 作答小提醒：<br>
+        遇到「分數」時，請在斜線前後的格子分別填入數字。<br>
+        例如：四分之一，請在左格填 <strong>1</strong>，右格填 <strong>4</strong>。
+    </div>
+
+    <form id="quizForm">
+        <div class="question-block">
+            <h3>一、 選擇題（每題 5 分）</h3>
+            
+            <div class="q-title">1. 爸爸買了一個西瓜，平分成 6 塊。大家把它吃光光（吃掉 6 塊），也就是吃掉多少個西瓜？</div>
+            <div class="options">
+                <label><input type="radio" name="q1" value="wrong1"> <span>① 1/6 個</span></label>
+                <label><input type="radio" name="q1" value="wrong2"> <span>② 6 個</span></label>
+                <label><input type="radio" name="q1" value="correct"> <span>③ 1 個</span></label>
+                <label><input type="radio" name="q1" value="wrong3"> <span>④ 0 個</span></label>
+            </div>
+            <div id="feedback-q1"></div>
+
+            <div class="q-title">2. 下面哪一個算式的答案是「1」？</div>
+            <div class="options">
+                <label><input type="radio" name="q2" value="wrong1"> <span>① 3/8 + 4/8</span></label>
+                <label><input type="radio" name="q2" value="wrong2"> <span>② 5/6 - 1/6</span></label>
+                <label><input type="radio" name="q2" value="correct"> <span>③ 2/5 + 3/5</span></label>
+                <label><input type="radio" name="q2" value="wrong3"> <span>④ 1 - 1/9</span></label>
+            </div>
+            <div id="feedback-q2"></div>
+
+            <div class="q-title">3. 一瓶牛奶剛好可以倒成 7 杯。喝了 4 杯後，還剩下「幾分之幾瓶」牛奶？</div>
+            <div class="options">
+                <label><input type="radio" name="q3" value="wrong1"> <span>① 4/7 瓶</span></label>
+                <label><input type="radio" name="q3" value="correct"> <span>② 3/7 瓶</span></label>
+                <label><input type="radio" name="q3" value="wrong2"> <span>③ 3 杯</span></label>
+                <label><input type="radio" name="q3" value="wrong3"> <span>④ 7/7 瓶</span></label>
+            </div>
+            <div id="feedback-q3"></div>
+
+            <div class="q-title">4. 哥哥有 5/9 盒彈珠，弟弟有 2/9 盒彈珠，哥哥比弟弟多出幾分之幾盒？</div>
+            <div class="options">
+                <label><input type="radio" name="q4" value="correct"> <span>① 3/9 盒</span></label>
+                <label><input type="radio" name="q4" value="wrong1"> <span>② 7/9 盒</span></label>
+                <label><input type="radio" name="q4" value="wrong2"> <span>③ 3 顆</span></label>
+                <label><input type="radio" name="q4" value="wrong3"> <span>④ 1 盒</span></label>
+            </div>
+            <div id="feedback-q4"></div>
+        </div>
+
+        <div class="question-block">
+            <h3>二、 填填看（每格 5 分）</h3>
+            
+            <div class="q-title">1. 一盒月餅有 4 個。</div>
+            <div class="calc-row">
+                (1) 1 個是 
+                <span class="fraction-wrapper">
+                    <input type="text" id="q5_1_num" inputmode="numeric">
+                    <span class="fraction-slash">/</span>
+                    <input type="text" id="q5_1_den" inputmode="numeric">
+                </span> 盒。<span id="feedback-q5_1"></span>
+            </div>
+            <div class="calc-row">
+                (2) 3/4 盒是 <input type="text" id="q5_2" inputmode="numeric"> 個。<span id="feedback-q5_2"></span>
+            </div>
+
+            <div class="q-title">2. 單位換算：一打鉛筆有 12 枝。</div>
+            <div class="calc-row">
+                (1) 拿走 5 枝，是拿走 
+                <span class="fraction-wrapper">
+                    <input type="text" id="q6_1_num" inputmode="numeric">
+                    <span class="fraction-slash">/</span>
+                    <input type="text" id="q6_1_den" inputmode="numeric">
+                </span> 打。<span id="feedback-q6_1"></span>
+            </div>
+            <div class="calc-row">
+                (2) 7/12 打鉛筆，也就是 <input type="text" id="q6_2" inputmode="numeric"> 枝。<span id="feedback-q6_2"></span>
+            </div>
+
+            <div class="q-title">3. 分數的加減找規律：</div>
+            <div class="calc-row">
+                (1) 1 - 5/8 = 
+                <span class="fraction-wrapper">
+                    <input type="text" id="q7_1_num" inputmode="numeric">
+                    <span class="fraction-slash">/</span>
+                    <input type="text" id="q7_1_den" inputmode="numeric">
+                </span><span id="feedback-q7_1"></span>
+            </div>
+            <div class="calc-row">
+                (2) 8/12 - 
+                <span class="fraction-wrapper">
+                    <input type="text" id="q7_2_num" inputmode="numeric">
+                    <span class="fraction-slash">/</span>
+                    <input type="text" id="q7_2_den" inputmode="numeric">
+                </span> = 5/12<span id="feedback-q7_2"></span>
+            </div>
+        </div>
+
+        <div class="question-block">
+            <h3>三、 綜合計算與應用題（每題 10 分）</h3>
+            
+            <div class="q-title">1. 基礎計算區：</div>
+            <div class="calc-row">
+                (1) 2/9 + 6/9 = 
+                <span class="fraction-wrapper">
+                    <input type="text" id="q8_1_num" inputmode="numeric">
+                    <span class="fraction-slash">/</span>
+                    <input type="text" id="q8_1_den" inputmode="numeric">
+                </span><span id="feedback-q8_1"></span>
+            </div>
+            <div class="calc-row">
+                (2) 1 - 7/10 = 
+                <span class="fraction-wrapper">
+                    <input type="text" id="q8_2_num" inputmode="numeric">
+                    <span class="fraction-slash">/</span>
+                    <input type="text" id="q8_2_den" inputmode="numeric">
+                </span><span id="feedback-q8_2"></span>
+            </div>
+            <div class="calc-row">
+                (3) 12/15 - 4/15 = 
+                <span class="fraction-wrapper">
+                    <input type="text" id="q8_3_num" inputmode="numeric">
+                    <span class="fraction-slash">/</span>
+                    <input type="text" id="q8_3_den" inputmode="numeric">
+                </span><span id="feedback-q8_3"></span>
+            </div>
+
+            <div class="q-title">2. 小花園裡有 10 盆花，其中 3 盆是紅花，4 盆是黃花，請問紅花和黃花一共佔了全部的「幾分之幾」？</div>
+            <div class="calc-row">
+                答案：一共佔了 
+                <span class="fraction-wrapper">
+                    <input type="text" id="q9_num" inputmode="numeric">
+                    <span class="fraction-slash">/</span>
+                    <input type="text" id="q9_den" inputmode="numeric">
+                </span> 。<span id="feedback-q9"></span>
+            </div>
+
+            <div class="q-title">3. 一個大蛋糕平分成 8 塊，小華吃了 3/8 個，還剩下幾分之幾「個」蛋糕？</div>
+            <div class="calc-row">
+                答案：還剩下 
+                <span class="fraction-wrapper">
+                    <input type="text" id="q10_num" inputmode="numeric">
+                    <span class="fraction-slash">/</span>
+                    <input type="text" id="q10_den" inputmode="numeric">
+                </span> 個。<span id="feedback-q10"></span>
+            </div>
+        </div>
+
+        <button type="button" onclick="gradeQuiz()">交卷看成績 💯</button>
+    </form>
+
+    <div id="result-display"></div>
+
+    <script>
+        function cleanString(str) {
+            let s = str.replace(/\s+/g, '');
+            s = s.replace(/[０-９／]/g, function(c) {
+                return String.fromCharCode(c.charCodeAt(0) - 0xfee0);
+            });
+            return s;
+        }
+
+        function checkFractionInput(idPrefix, correctNum, correctDen, scoreVal) {
+            let rawNum = document.getElementById(idPrefix + '_num').value;
+            let rawDen = document.getElementById(idPrefix + '_den').value;
+            
+            let userNum = cleanString(rawNum);
+            let userDen = cleanString(rawDen);
+            let feedback = document.getElementById('feedback-' + idPrefix);
+            
+            if (rawNum === "" || rawDen === "") {
+                feedback.innerHTML = " 👈 忘記寫囉！";
+                feedback.className = "wrong-text";
+                return 0;
+            } else if (userNum === correctNum && userDen === correctDen) {
+                feedback.innerHTML = " ✔️ 答對了！";
+                feedback.className = "correct-text";
+                return scoreVal;
+            } else {
+                feedback.innerHTML = " ❌ 答錯了！";
+                feedback.className = "wrong-text";
+                return 0;
+            }
+        }
+
+        function checkInput(inputId, correctAnswers, scoreVal) {
+            let rawInput = document.getElementById(inputId).value;
+            let userAns = cleanString(rawInput);
+            let feedback = document.getElementById('feedback-' + inputId);
+            let isCorrect = correctAnswers.includes(userAns);
+            
+            if (rawInput === "") {
+                feedback.innerHTML = " 👈 忘記寫囉！";
+                feedback.className = "wrong-text";
+                return 0;
+            } else if (isCorrect) {
+                feedback.innerHTML = " ✔️ 答對了！";
+                feedback.className = "correct-text";
+                return scoreVal;
+            } else {
+                feedback.innerHTML = " ❌ 答錯了！";
+                feedback.className = "wrong-text";
+                return 0;
+            }
+        }
+
+        function checkRadio(name, scoreVal) {
+            let radios = document.getElementsByName(name);
+            let feedback = document.getElementById('feedback-' + name);
+            let userAns = "";
+            for (let i = 0; i < radios.length; i++) {
+                if (radios[i].checked) {
+                    userAns = radios[i].value;
+                    break;
+                }
+            }
+            
+            if (userAns === "correct") {
+                feedback.innerHTML = " ✔️ 答對了！";
+                feedback.className = "correct-text";
+                return scoreVal;
+            } else if (userAns === "") {
+                feedback.innerHTML = " 👈 忘記選囉！";
+                feedback.className = "wrong-text";
+                return 0;
+            } else {
+                feedback.innerHTML = " ❌ 答錯了！";
+                feedback.className = "wrong-text";
+                return 0;
+            }
+        }
+
+        function gradeQuiz() {
+            let totalScore = 0;
+            
+            totalScore += checkRadio('q1', 5);
+            totalScore += checkRadio('q2', 5);
+            totalScore += checkRadio('q3', 5);
+            totalScore += checkRadio('q4', 5);
+
+            totalScore += checkFractionInput('q5_1', '1', '4', 5);
+            totalScore += checkInput('q5_2', ['3'], 5);
+            totalScore += checkFractionInput('q6_1', '5', '12', 5);
+            totalScore += checkInput('q6_2', ['7'], 5);
+            totalScore += checkFractionInput('q7_1', '3', '8', 5);
+            totalScore += checkFractionInput('q7_2', '3', '12', 5);
+
+            totalScore += checkFractionInput('q8_1', '8', '9', 10);
+            totalScore += checkFractionInput('q8_2', '3', '10', 10);
+            totalScore += checkFractionInput('q8_3', '8', '15', 10);
+            
+            totalScore += checkFractionInput('q9', '7', '10', 10);
+            totalScore += checkFractionInput('q10', '5', '8', 10);
+
+            let resultDiv = document.getElementById('result-display');
+            resultDiv.style.display = "block";
+            
+            if (totalScore === 100) {
+                resultDiv.style.backgroundColor = "#d4edda";
+                resultDiv.style.color = "#155724";
+                resultDiv.innerHTML = `太棒了！滿分 100 分！🎉<br>第三回綜合挑戰大成功！`;
+            } else if (totalScore >= 80) {
+                resultDiv.style.backgroundColor = "#fff3cd";
+                resultDiv.style.color = "#856404";
+                resultDiv.innerHTML = `很厲害喔！總分：${totalScore} 分。<br>再檢查一下錯誤的地方，馬上就滿分了！💪`;
+            } else {
+                resultDiv.style.backgroundColor = "#f8d7da";
+                resultDiv.style.color = "#721c24";
+                resultDiv.innerHTML = `總分：${totalScore} 分。<br>沒關係，數學就是多練習，看看哪裡粗心了呢？🔍`;
+            }
+            
+            setTimeout(() => {
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }, 100);
+        }
+    </script>
+</body>
+</html>
+
+```
