@@ -1,0 +1,641 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>三年級數學下學期：六回綜合大挑戰</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="數學大挑戰">
+    <link rel="apple-touch-icon" href="https://api.dicebear.com/7.x/shapes/svg?seed=math6&backgroundColor=d35400">
+
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 15px;
+            line-height: 1.8;
+            -webkit-tap-highlight-color: transparent;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-top: 20px;
+            font-size: 1.4em;
+        }
+        .instruction {
+            background-color: #fff3cd;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border-left: 5px solid #ffc107;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+        /* 頁籤 6 網格設計 */
+        .tab-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            padding: 12px 2px; 
+            font-size: 0.95em;
+            font-weight: bold;
+            background-color: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            border-radius: 8px; 
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .tab-btn.active {
+            background-color: #4a90e2;
+            color: white;
+            box-shadow: 0 2px 4px rgba(74, 144, 226, 0.3);
+        }
+        .tab-btn.comp {
+            background-color: #ffe4e6; /* 綜合卷特別顏色 */
+            color: #be123c;
+        }
+        .tab-btn.comp.active {
+            background-color: #e11d48;
+            color: white;
+        }
+        /* 測驗區塊設計 */
+        .test-container {
+            display: none;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .test-container.active { display: block; }
+        
+        h3 {
+            color: #d35400;
+            border-bottom: 2px dashed #e9ecef;
+            padding-bottom: 8px;
+            margin-top: 0;
+            font-size: 1.15em;
+        }
+        .q-title {
+            font-size: 1.05em;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .options label {
+            display: block;
+            margin: 12px 0;
+            cursor: pointer;
+            padding: 10px 12px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            transition: background-color 0.2s;
+        }
+        .options label:active { background-color: #e9ecef; }
+        .options input[type="radio"] {
+            transform: scale(1.2);
+            margin-right: 8px;
+        }
+        .options input[type="radio"]:checked + span {
+            font-weight: bold;
+            color: #4a90e2;
+        }
+        input[type="text"] {
+            font-size: 1.1em;
+            padding: 8px 5px;
+            width: 50px; 
+            text-align: center;
+            border: 2px solid #cbd5e0;
+            border-radius: 6px;
+            margin: 0 5px;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+        }
+        /* 分數雙輸入框排版 */
+        .fraction-wrapper {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0 5px;
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 8px;
+            border: 1px dashed #cbd5e0;
+        }
+        .fraction-wrapper input[type="text"] {
+            width: 35px; 
+            margin: 0 3px;
+            border: 1px solid #a0aec0;
+        }
+        .fraction-slash {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #718096;
+            margin: 0 2px;
+        }
+        .calc-row {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            line-height: 2;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 30px;
+            box-shadow: 0 4px 6px rgba(40, 167, 69, 0.3);
+        }
+        .submit-btn:active { background-color: #218838; transform: translateY(2px); }
+        .result-box {
+            display: none;
+            text-align: center;
+            font-size: 1.2em;
+            line-height: 1.5;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 12px;
+        }
+        .correct-text { color: #28a745; font-weight: bold; margin-left: 5px; }
+        .wrong-text { color: #dc3545; font-weight: bold; margin-left: 5px; }
+        .perfect { background-color: #d4edda; color: #155724; }
+        .good { background-color: #fff3cd; color: #856404; }
+        .keep-going { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+
+    <h1>🏆 數學期末六回大挑戰</h1>
+    
+    <div class="instruction">
+        💡 作答小提醒：<br>
+        1. 遇到「分數」請直接點擊小格子，用數字鍵盤輸入。<br>
+        2. 每回都是 100 分，請選擇上方的測驗卷開始作答！
+    </div>
+
+    <!-- 6個頁籤按鈕 -->
+    <div class="tab-container">
+        <button class="tab-btn active" onclick="switchTest(1)" id="btn-1">第1回: 除法</button>
+        <button class="tab-btn" onclick="switchTest(2)" id="btn-2">第2回: 圓</button>
+        <button class="tab-btn" onclick="switchTest(3)" id="btn-3">第3回: 容量</button>
+        <button class="tab-btn" onclick="switchTest(4)" id="btn-4">第4回: 分數</button>
+        <button class="tab-btn comp" onclick="switchTest(5)" id="btn-5">綜合測驗(一)</button>
+        <button class="tab-btn comp" onclick="switchTest(6)" id="btn-6">綜合測驗(二)</button>
+    </div>
+
+    <!-- 第 1 回：除法 -->
+    <div id="test-1" class="test-container active">
+        <h3>一、 選擇題（每題 10 分）</h3>
+        <div class="q-title">1. 算算看，84 ÷ 4 的答案是多少？</div>
+        <div class="options">
+            <label><input type="radio" name="t1_m1" value="1"> <span>① 20</span></label>
+            <label><input type="radio" name="t1_m1" value="2"> <span>② 21</span></label>
+            <label><input type="radio" name="t1_m1" value="3"> <span>③ 22</span></label>
+        </div>
+        <div id="feedback-t1_m1" data-ans="2" data-pts="10"></div>
+
+        <div class="q-title">2. 下面哪一個算式的「餘數」是 1？</div>
+        <div class="options">
+            <label><input type="radio" name="t1_m2" value="1"> <span>① 15 ÷ 2</span></label>
+            <label><input type="radio" name="t1_m2" value="2"> <span>② 16 ÷ 3</span></label>
+            <label><input type="radio" name="t1_m2" value="3"> <span>③ 17 ÷ 4</span></label>
+        </div>
+        <div id="feedback-t1_m2" data-ans="1" data-pts="10"></div>
+
+        <h3>二、 填填看（每格 10 分）</h3>
+        <div class="calc-row">
+            1. 75 ÷ 8 = <input type="text" id="t1_q1_1" data-ans="9" data-pts="10" inputmode="numeric"> ... 
+            <input type="text" id="t1_q1_2" data-ans="3" data-pts="10" inputmode="numeric">
+            <span id="feedback-t1_q1_1"></span><span id="feedback-t1_q1_2"></span>
+        </div>
+        <div class="calc-row">
+            2. 100 ÷ 9 = <input type="text" id="t1_q2_1" data-ans="11" data-pts="10" inputmode="numeric"> ... 
+            <input type="text" id="t1_q2_2" data-ans="1" data-pts="10" inputmode="numeric">
+            <span id="feedback-t1_q2_1"></span><span id="feedback-t1_q2_2"></span>
+        </div>
+
+        <h3>三、 應用題（每格 20 分）</h3>
+        <div class="calc-row">
+            老師有 50 顆巧克力，每 6 顆裝成一盒。<br>
+            最多可以裝滿 <input type="text" id="t1_q3_1" data-ans="8" data-pts="20" inputmode="numeric"> 盒，<br>
+            還剩下 <input type="text" id="t1_q3_2" data-ans="2" data-pts="20" inputmode="numeric"> 顆。
+            <span id="feedback-t1_q3_1"></span><span id="feedback-t1_q3_2"></span>
+        </div>
+        
+        <button type="button" class="submit-btn" onclick="gradeQuiz(1)">除法卷交卷 💯</button>
+        <div id="result-1" class="result-box"></div>
+    </div>
+
+    <!-- 第 2 回：圓 -->
+    <div id="test-2" class="test-container">
+        <h3>一、 選擇題（每題 10 分）</h3>
+        <div class="q-title">1. 用圓規畫圓時，針尖刺下去固定的地方叫作什麼？</div>
+        <div class="options">
+            <label><input type="radio" name="t2_m1" value="1"> <span>① 半徑</span></label>
+            <label><input type="radio" name="t2_m1" value="2"> <span>② 圓心</span></label>
+            <label><input type="radio" name="t2_m1" value="3"> <span>③ 圓周</span></label>
+        </div>
+        <div id="feedback-t2_m1" data-ans="2" data-pts="10"></div>
+
+        <div class="q-title">2. 同一個圓裡面，直徑的長度是半徑的幾倍？</div>
+        <div class="options">
+            <label><input type="radio" name="t2_m2" value="1"> <span>① 1倍</span></label>
+            <label><input type="radio" name="t2_m2" value="2"> <span>② 2倍</span></label>
+            <label><input type="radio" name="t2_m2" value="3"> <span>③ 3倍</span></label>
+        </div>
+        <div id="feedback-t2_m2" data-ans="2" data-pts="10"></div>
+
+        <h3>二、 填填看（每格 20 分）</h3>
+        <div class="calc-row">
+            1. 一個圓的半徑是 7 公分，直徑是 <input type="text" id="t2_q1" data-ans="14" data-pts="20" inputmode="numeric"> 公分。
+            <span id="feedback-t2_q1"></span>
+        </div>
+        <div class="calc-row">
+            2. 披薩的直徑是 20 公分，半徑是 <input type="text" id="t2_q2" data-ans="10" data-pts="20" inputmode="numeric"> 公分。
+            <span id="feedback-t2_q2"></span>
+        </div>
+
+        <h3>三、 應用題（每格 20 分）</h3>
+        <div class="calc-row">
+            在一個邊長 10 公分的正方形紙上，畫出一個「最大」的圓。<br>
+            這個圓的直徑會是 <input type="text" id="t2_q3_1" data-ans="10" data-pts="20" inputmode="numeric"> 公分，<br>
+            半徑是 <input type="text" id="t2_q3_2" data-ans="5" data-pts="20" inputmode="numeric"> 公分。
+            <span id="feedback-t2_q3_1"></span><span id="feedback-t2_q3_2"></span>
+        </div>
+        
+        <button type="button" class="submit-btn" onclick="gradeQuiz(2)">圓形卷交卷 💯</button>
+        <div id="result-2" class="result-box"></div>
+    </div>
+
+    <!-- 第 3 回：容量 -->
+    <div id="test-3" class="test-container">
+        <h3>一、 選擇題（每題 10 分）</h3>
+        <div class="q-title">1. 一瓶小瓶的養樂多，大約是多少容量？</div>
+        <div class="options">
+            <label><input type="radio" name="t3_m1" value="1"> <span>① 100 公升</span></label>
+            <label><input type="radio" name="t3_m1" value="2"> <span>② 100 毫升</span></label>
+            <label><input type="radio" name="t3_m1" value="3"> <span>③ 100 公分</span></label>
+        </div>
+        <div id="feedback-t3_m1" data-ans="2" data-pts="10"></div>
+
+        <div class="q-title">2. 2 公升的水，跟幾毫升的水一樣多？</div>
+        <div class="options">
+            <label><input type="radio" name="t3_m2" value="1"> <span>① 20 毫升</span></label>
+            <label><input type="radio" name="t3_m2" value="2"> <span>② 200 毫升</span></label>
+            <label><input type="radio" name="t3_m2" value="3"> <span>③ 2000 毫升</span></label>
+        </div>
+        <div id="feedback-t3_m2" data-ans="3" data-pts="10"></div>
+
+        <h3>二、 填填看（每格 10 分）</h3>
+        <div class="calc-row">
+            1. 4050 毫升 = <input type="text" id="t3_q1_1" data-ans="4" data-pts="10" inputmode="numeric"> 公升 
+            <input type="text" id="t3_q1_2" data-ans="50" data-pts="10" inputmode="numeric"> 毫升。
+            <span id="feedback-t3_q1_1"></span><span id="feedback-t3_q1_2"></span>
+        </div>
+        <div class="calc-row">
+            2. 1 公升 300 毫升 = <input type="text" id="t3_q2" data-ans="1300" data-pts="20" inputmode="numeric"> 毫升。
+            <span id="feedback-t3_q2"></span>
+        </div>
+
+        <h3>三、 應用題（每格 10 分）</h3>
+        <div class="calc-row">
+            1. 水桶裡有 3 公升 500 毫升的水，再加入 1 公升 200 毫升，<br>
+            現在有 <input type="text" id="t3_q3_1" data-ans="4" data-pts="10" inputmode="numeric"> 公升 
+            <input type="text" id="t3_q3_2" data-ans="700" data-pts="10" inputmode="numeric"> 毫升。
+            <span id="feedback-t3_q3_1"></span><span id="feedback-t3_q3_2"></span>
+        </div>
+        <div class="calc-row">
+            2. 鍋子裡有 2 公升的水，煮湯用掉 800 毫升，<br>
+            還剩下 <input type="text" id="t3_q4_1" data-ans="1" data-pts="10" inputmode="numeric"> 公升 
+            <input type="text" id="t3_q4_2" data-ans="200" data-pts="10" inputmode="numeric"> 毫升。
+            <span id="feedback-t3_q4_1"></span><span id="feedback-t3_q4_2"></span>
+        </div>
+        
+        <button type="button" class="submit-btn" onclick="gradeQuiz(3)">容量卷交卷 💯</button>
+        <div id="result-3" class="result-box"></div>
+    </div>
+
+    <!-- 第 4 回：分數 -->
+    <div id="test-4" class="test-container">
+        <h3>一、 選擇題（每題 15 分）</h3>
+        <div class="q-title">1. 蛋糕平分成 8 塊，哥哥吃了 3 塊，是吃了幾分之幾個？</div>
+        <div class="options">
+            <label><input type="radio" name="t4_m1" value="1"> <span>① 3/8 個</span></label>
+            <label><input type="radio" name="t4_m1" value="2"> <span>② 5/8 個</span></label>
+            <label><input type="radio" name="t4_m1" value="3"> <span>③ 8/3 個</span></label>
+        </div>
+        <div id="feedback-t4_m1" data-ans="1" data-pts="15"></div>
+
+        <div class="q-title">2. 下面哪一個分數「最大」？</div>
+        <div class="options">
+            <label><input type="radio" name="t4_m2" value="1"> <span>① 2/10</span></label>
+            <label><input type="radio" name="t4_m2" value="2"> <span>② 4/10</span></label>
+            <label><input type="radio" name="t4_m2" value="3"> <span>③ 9/10</span></label>
+        </div>
+        <div id="feedback-t4_m2" data-ans="3" data-pts="15"></div>
+
+        <h3>二、 算算看（每格 15 分）</h3>
+        <div class="calc-row">
+            1. 1 - 2/7 = 
+            <span class="fraction-wrapper">
+                <input type="text" id="t4_q1_num" inputmode="numeric">
+                <span class="fraction-slash">/</span>
+                <input type="text" id="t4_q1_den" inputmode="numeric">
+            </span>
+            <span id="feedback-t4_q1" data-type="fraction" data-ans-num="5" data-ans-den="7" data-pts="15"></span>
+        </div>
+        <div class="calc-row">
+            2. 4/9 + 3/9 = 
+            <span class="fraction-wrapper">
+                <input type="text" id="t4_q2_num" inputmode="numeric">
+                <span class="fraction-slash">/</span>
+                <input type="text" id="t4_q2_den" inputmode="numeric">
+            </span>
+            <span id="feedback-t4_q2" data-type="fraction" data-ans-num="7" data-ans-den="9" data-pts="15"></span>
+        </div>
+
+        <h3>三、 應用題（每題 20 分）</h3>
+        <div class="calc-row">
+            1. 繩子長 1 公尺，包裝禮物用掉 6/10 公尺，<br>還剩下 
+            <span class="fraction-wrapper">
+                <input type="text" id="t4_q3_num" inputmode="numeric">
+                <span class="fraction-slash">/</span>
+                <input type="text" id="t4_q3_den" inputmode="numeric">
+            </span> 公尺。
+            <span id="feedback-t4_q3" data-type="fraction" data-ans-num="4" data-ans-den="10" data-pts="20"></span>
+        </div>
+        <div class="calc-row">
+            2. 承上題，如果做蝴蝶結再用掉 1/10 公尺，<br>現在繩子剩下 
+            <span class="fraction-wrapper">
+                <input type="text" id="t4_q4_num" inputmode="numeric">
+                <span class="fraction-slash">/</span>
+                <input type="text" id="t4_q4_den" inputmode="numeric">
+            </span> 公尺。
+            <span id="feedback-t4_q4" data-type="fraction" data-ans-num="3" data-ans-den="10" data-pts="20"></span>
+        </div>
+        
+        <button type="button" class="submit-btn" onclick="gradeQuiz(4)">分數卷交卷 💯</button>
+        <div id="result-4" class="result-box"></div>
+    </div>
+
+    <!-- 第 5 回：綜合一 -->
+    <div id="test-5" class="test-container">
+        <h3>一、 綜合選擇題（每題 10 分）</h3>
+        <div class="q-title">1. 除法 40 ÷ 7 的商和餘數是多少？</div>
+        <div class="options">
+            <label><input type="radio" name="t5_m1" value="1"> <span>① 5...4</span></label>
+            <label><input type="radio" name="t5_m1" value="2"> <span>② 5...5</span></label>
+            <label><input type="radio" name="t5_m1" value="3"> <span>③ 6...1</span></label>
+        </div>
+        <div id="feedback-t5_m1" data-ans="2" data-pts="10"></div>
+
+        <div class="q-title">2. 圓的半徑是 8 公分，直徑會是多少？</div>
+        <div class="options">
+            <label><input type="radio" name="t5_m2" value="1"> <span>① 4 公分</span></label>
+            <label><input type="radio" name="t5_m2" value="2"> <span>② 8 公分</span></label>
+            <label><input type="radio" name="t5_m2" value="3"> <span>③ 16 公分</span></label>
+        </div>
+        <div id="feedback-t5_m2" data-ans="3" data-pts="10"></div>
+
+        <h3>二、 填填看（每題 20 分）</h3>
+        <div class="calc-row">
+            1. 3 公升 40 毫升 = <input type="text" id="t5_q1" data-ans="3040" data-pts="20" inputmode="numeric"> 毫升。
+            <span id="feedback-t5_q1"></span>
+        </div>
+        <div class="calc-row">
+            2. 1 - 3/5 = 
+            <span class="fraction-wrapper">
+                <input type="text" id="t5_q2_num" inputmode="numeric">
+                <span class="fraction-slash">/</span>
+                <input type="text" id="t5_q2_den" inputmode="numeric">
+            </span>
+            <span id="feedback-t5_q2" data-type="fraction" data-ans-num="2" data-ans-den="5" data-pts="20"></span>
+        </div>
+
+        <h3>三、 應用題（每格 10 分）</h3>
+        <div class="calc-row">
+            1. 62 張色紙，每 8 張訂成一小本，最多訂 <input type="text" id="t5_q3_1" data-ans="7" data-pts="10" inputmode="numeric"> 本，剩 <input type="text" id="t5_q3_2" data-ans="6" data-pts="10" inputmode="numeric"> 張。
+            <span id="feedback-t5_q3_1"></span><span id="feedback-t5_q3_2"></span>
+        </div>
+        <div class="calc-row">
+            2. 水壺裝 2 公升的水，喝了 500 毫升，還剩 <input type="text" id="t5_q4_1" data-ans="1" data-pts="10" inputmode="numeric"> 公升 <input type="text" id="t5_q4_2" data-ans="500" data-pts="10" inputmode="numeric"> 毫升。
+            <span id="feedback-t5_q4_1"></span><span id="feedback-t5_q4_2"></span>
+        </div>
+        
+        <button type="button" class="submit-btn" onclick="gradeQuiz(5)">綜合卷(一)交卷 💯</button>
+        <div id="result-5" class="result-box"></div>
+    </div>
+
+    <!-- 第 6 回：綜合二 -->
+    <div id="test-6" class="test-container">
+        <h3>一、 綜合選擇題（每題 10 分）</h3>
+        <div class="q-title">1. 5000 毫升等於多少公升？</div>
+        <div class="options">
+            <label><input type="radio" name="t6_m1" value="1"> <span>① 5 公升</span></label>
+            <label><input type="radio" name="t6_m1" value="2"> <span>② 50 公升</span></label>
+            <label><input type="radio" name="t6_m1" value="3"> <span>③ 500 公升</span></label>
+        </div>
+        <div id="feedback-t6_m1" data-ans="1" data-pts="10"></div>
+
+        <div class="q-title">2. 哪兩個分數加起來剛好是「1」？</div>
+        <div class="options">
+            <label><input type="radio" name="t6_m2" value="1"> <span>① 1/5 + 3/5</span></label>
+            <label><input type="radio" name="t6_m2" value="2"> <span>② 2/8 + 6/8</span></label>
+            <label><input type="radio" name="t6_m2" value="3"> <span>③ 4/9 + 4/9</span></label>
+        </div>
+        <div id="feedback-t6_m2" data-ans="2" data-pts="10"></div>
+
+        <h3>二、 填填看（每題 20 分）</h3>
+        <div class="calc-row">
+            1. 100 ÷ 8 = <input type="text" id="t6_q1_1" data-ans="12" data-pts="10" inputmode="numeric"> ... 
+            <input type="text" id="t6_q1_2" data-ans="4" data-pts="10" inputmode="numeric">
+            <span id="feedback-t6_q1_1"></span><span id="feedback-t6_q1_2"></span>
+        </div>
+        <div class="calc-row">
+            2. 3/11 + 5/11 = 
+            <span class="fraction-wrapper">
+                <input type="text" id="t6_q2_num" inputmode="numeric">
+                <span class="fraction-slash">/</span>
+                <input type="text" id="t6_q2_den" inputmode="numeric">
+            </span>
+            <span id="feedback-t6_q2" data-type="fraction" data-ans-num="8" data-ans-den="11" data-pts="20"></span>
+        </div>
+
+        <h3>三、 應用題（每題 20 分）</h3>
+        <div class="calc-row">
+            1. 畫了一個直徑 18 公分的圓，這個圓的半徑是 <input type="text" id="t6_q3" data-ans="9" data-pts="20" inputmode="numeric"> 公分。
+            <span id="feedback-t6_q3"></span>
+        </div>
+        <div class="calc-row">
+            2. 一盒雞蛋 10 顆。媽媽買了 1 盒，不小心打破 3 顆，還剩下 
+            <span class="fraction-wrapper">
+                <input type="text" id="t6_q4_num" inputmode="numeric">
+                <span class="fraction-slash">/</span>
+                <input type="text" id="t6_q4_den" inputmode="numeric">
+            </span> 盒。
+            <span id="feedback-t6_q4" data-type="fraction" data-ans-num="7" data-ans-den="10" data-pts="20"></span>
+        </div>
+        
+        <button type="button" class="submit-btn" onclick="gradeQuiz(6)">綜合卷(二)交卷 💯</button>
+        <div id="result-6" class="result-box"></div>
+    </div>
+
+    <script>
+        // 切換頁籤功能
+        function switchTest(testNum) {
+            document.querySelectorAll('.test-container').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById('test-' + testNum).classList.add('active');
+            document.getElementById('btn-' + testNum).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 清除全形與空白
+        function cleanString(str) {
+            let s = str.replace(/\s+/g, '');
+            s = s.replace(/[０-９]/g, function(c) {
+                return String.fromCharCode(c.charCodeAt(0) - 0xfee0);
+            });
+            return s;
+        }
+
+        // 自動批改功能
+        function gradeQuiz(testNum) {
+            let totalScore = 0;
+            let testDiv = document.getElementById('test-' + testNum);
+
+            // 1. 批改普通填空題
+            let textInputs = testDiv.querySelectorAll('input[type="text"]:not([id$="_num"]):not([id$="_den"])');
+            textInputs.forEach(input => {
+                let ansArray = input.getAttribute('data-ans').split(','); 
+                let pts = parseInt(input.getAttribute('data-pts'));
+                let userAns = cleanString(input.value); 
+                let feedbackId = input.id.replace(input.id, 'feedback-' + input.id);
+                let feedback = document.getElementById(feedbackId);
+                
+                if(!feedback) return; 
+
+                if (userAns === "") {
+                    feedback.innerHTML = " 👈 沒填寫";
+                    feedback.className = "wrong-text";
+                } else if (ansArray.includes(userAns)) {
+                    feedback.innerHTML = " ✔️";
+                    feedback.className = "correct-text";
+                    totalScore += pts;
+                } else {
+                    feedback.innerHTML = " ❌";
+                    feedback.className = "wrong-text";
+                }
+            });
+
+            // 2. 批改雙格子分數題
+            let fractionSpans = testDiv.querySelectorAll('span[data-type="fraction"]');
+            fractionSpans.forEach(span => {
+                let baseId = span.id.replace('feedback-', ''); 
+                let numInput = document.getElementById(baseId + '_num');
+                let denInput = document.getElementById(baseId + '_den');
+                
+                let correctNum = span.getAttribute('data-ans-num');
+                let correctDen = span.getAttribute('data-ans-den');
+                let pts = parseInt(span.getAttribute('data-pts'));
+
+                let userNum = cleanString(numInput.value);
+                let userDen = cleanString(denInput.value);
+
+                if (userNum === "" || userDen === "") {
+                    span.innerHTML = " 👈 沒填寫完";
+                    span.className = "wrong-text";
+                } else if (userNum === correctNum && userDen === correctDen) {
+                    span.innerHTML = " ✔️";
+                    span.className = "correct-text";
+                    totalScore += pts;
+                } else {
+                    span.innerHTML = " ❌";
+                    span.className = "wrong-text";
+                }
+            });
+
+            // 3. 批改選擇題
+            let radioFeedbackSpans = testDiv.querySelectorAll('div[id^="feedback-t"][data-ans]');
+            radioFeedbackSpans.forEach(span => {
+                if(span.hasAttribute('data-type')) return; 
+
+                let name = span.id.replace('feedback-', '');
+                let radios = testDiv.querySelectorAll(`input[name="${name}"]`);
+                if (radios.length > 0) {
+                    let correctAns = span.getAttribute('data-ans');
+                    let pts = parseInt(span.getAttribute('data-pts'));
+                    let userAns = "";
+                    
+                    radios.forEach(r => { if(r.checked) userAns = r.value; });
+
+                    if (userAns === "") {
+                        span.innerHTML = " 👈 沒選";
+                        span.className = "wrong-text";
+                    } else if (userAns === correctAns) {
+                        span.innerHTML = " ✔️";
+                        span.className = "correct-text";
+                        totalScore += pts;
+                    } else {
+                        span.innerHTML = " ❌";
+                        span.className = "wrong-text";
+                    }
+                }
+            });
+
+            // 顯示成績結果
+            let resultDiv = document.getElementById('result-' + testNum);
+            resultDiv.style.display = "block";
+            
+            if (totalScore === 100) {
+                resultDiv.className = "result-box perfect";
+                resultDiv.innerHTML = `太厲害了！滿分 100 分！🎉<br>觀念非常清楚！`;
+            } else if (totalScore >= 80) {
+                resultDiv.className = "result-box good";
+                resultDiv.innerHTML = `表現很棒喔！總分：${totalScore} 分。<br>把紅色的地方再檢查一下！💪`;
+            } else {
+                resultDiv.className = "result-box keep-going";
+                resultDiv.innerHTML = `總分：${totalScore} 分。<br>沒關係，看看是哪邊不小心算錯了呢？✏️`;
+            }
+
+            // 捲動看成績
+            setTimeout(() => {
+                resultDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 100);
+        }
+    </script>
+</body>
+</html>
+
+
+```
