@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三年級數學下學期：綜合複習卷</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 15px;
+            line-height: 1.8;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .instruction {
+            background-color: #fff3cd;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border-left: 5px solid #ffc107;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        /* 頁籤按鈕設計 */
+        .tab-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            font-size: 1.1em;
+            font-weight: bold;
+            background-color: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            margin: 0 2px;
+            transition: 0.3s;
+        }
+        .tab-btn.active {
+            background-color: #4a90e2;
+            color: white;
+        }
+        /* 測驗區塊設計 */
+        .test-container {
+            display: none;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .test-container.active {
+            display: block;
+        }
+        h3 {
+            color: #d35400;
+            border-bottom: 2px dashed #e9ecef;
+            padding-bottom: 5px;
+        }
+        .q-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #2c3e50;
+        }
+        .options label {
+            display: block;
+            margin: 8px 0;
+            cursor: pointer;
+        }
+        input[type="text"] {
+            font-size: 1em;
+            padding: 6px;
+            width: 80px;
+            text-align: center;
+            border: 2px solid #cbd5e0;
+            border-radius: 5px;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+        .submit-btn:hover { background-color: #218838; }
+        
+        .result-box {
+            display: none;
+            text-align: center;
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .correct-text { color: #28a745; font-weight: bold; margin-left: 5px; }
+        .wrong-text { color: #dc3545; font-weight: bold; margin-left: 5px; }
+        .perfect { background-color: #d4edda; color: #155724; }
+        .good { background-color: #fff3cd; color: #856404; }
+        .keep-going { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+
+    <h1>🏆 數學期中/期末綜合挑戰</h1>
+    
+    <div class="instruction">
+        💡 作答小提醒：如果是填寫「分數」，請用斜線「/」表示，例如：3/10。<br>
+        準備好了嗎？請選擇上方的測驗卷開始作答！
+    </div>
+
+    <div class="tab-container">
+        <button class="tab-btn active" onclick="switchTest(1)" id="btn-1">第一回 (除法與圓)</button>
+        <button class="tab-btn" onclick="switchTest(2)" id="btn-2">第二回 (容量與分數)</button>
+        <button class="tab-btn" onclick="switchTest(3)" id="btn-3">第三回 (綜合總複習)</button>
+    </div>
+
+    <div id="test-1" class="test-container active">
+        <h3>一、 選擇題（每題 10 分）</h3>
+        <div class="q-title">1. 圓內最長的直線叫作什麼？</div>
+        <div class="options">
+            <label><input type="radio" name="t1_m1" value="1"> ① 半徑</label>
+            <label><input type="radio" name="t1_m1" value="2"> ② 直徑</label>
+            <label><input type="radio" name="t1_m1" value="3"> ③ 圓心</label>
+        </div>
+        <span id="feedback-t1_m1" data-ans="2" data-pts="10"></span>
+
+        <div class="q-title">2. 92 顆糖果，每 6 顆裝一袋，最多可以裝滿幾袋？還剩下幾顆？</div>
+        <div class="options">
+            <label><input type="radio" name="t1_m2" value="1"> ① 15袋，剩 2 顆</label>
+            <label><input type="radio" name="t1_m2" value="2"> ② 15袋，剩 1 顆</label>
+            <label><input type="radio" name="t1_m2" value="3"> ③ 14袋，剩 4 顆</label>
+        </div>
+        <span id="feedback-t1_m2" data-ans="1" data-pts="10"></span>
+
+        <h3>二、 填填看（每題 10 分）</h3>
+        <div class="q-title">1. 5 公升 78 毫升 = <input type="text" data-ans="5078" data-pts="10"> 毫升<span></span></div>
+        <div class="q-title">2. 一盒水蜜桃有 6 顆，妹妹吃了 2 顆，是吃了 <input type="text" data-ans="2/6" data-pts="10"> 盒。<span></span></div>
+        <div class="q-title">3. A圓半徑 6 公分，B圓直徑 10 公分，<input type="text" data-ans="A,a,Ａ,ａ" data-pts="10"> 圓比較大。(請填 A 或 B)<span></span></div>
+
+        <h3>三、 應用題（每題 25 分）</h3>
+        <div class="q-title">1. 媽媽做了 96 個麻糬，平分裝成 4 盒，每盒有幾個麻糬？</div>
+        答：有 <input type="text" data-ans="24" data-pts="25"> 個。<span></span>
+
+        <div class="q-title">2. 水桶裡有 4 公升 600 毫升的水，又倒入 2 公升 300 毫升，現在共有多少水？</div>
+        答：共 <input type="text" data-ans="6" data-pts="10"> 公升 <input type="text" data-ans="900" data-pts="15"> 毫升。<span></span><span></span>
+        
+        <button type="button" class="submit-btn" onclick="gradeQuiz(1)">第一回交卷 💯</button>
+        <div id="result-1" class="result-box"></div>
+    </div>
+
+    <div id="test-2" class="test-container">
+        <h3>一、 選擇題（每題 10 分）</h3>
+        <div class="q-title">1. 洗衣機洗一次衣服大約需要用水 65 什麼單位？</div>
+        <div class="options">
+            <label><input type="radio" name="t2_m1" value="1"> ① 公升</label>
+            <label><input type="radio" name="t2_m1" value="2"> ② 毫升</label>
+            <label><input type="radio" name="t2_m1" value="3"> ③ 公分</label>
+        </div>
+        <span id="feedback-t2_m1" data-ans="1" data-pts="10"></span>
+
+        <div class="q-title">2. 分數計算： 1 - 3/8 = ？</div>
+        <div class="options">
+            <label><input type="radio" name="t2_m2" value="1"> ① 4/8</label>
+            <label><input type="radio" name="t2_m2" value="2"> ② 5/8</label>
+            <label><input type="radio" name="t2_m2" value="3"> ③ 6/8</label>
+        </div>
+        <span id="feedback-t2_m2" data-ans="2" data-pts="10"></span>
+
+        <h3>二、 填填看</h3>
+        <div class="q-title">1. 圓規兩腳打開的長度，畫出來就是圓的 <input type="text" data-ans="半徑" data-pts="10">。(請填 半徑 或 直徑)<span></span></div>
+        <div class="q-title">2. 計算除法： 83 ÷ 3 = <input type="text" data-ans="27" data-pts="5"> ... <input type="text" data-ans="2" data-pts="5"><span></span><span></span></div>
+        <div class="q-title">3. 3000 毫升 = <input type="text" data-ans="3" data-pts="10"> 公升<span></span></div>
+
+        <h3>三、 應用題（每題 25 分）</h3>
+        <div class="q-title">1. 一盒雞蛋有 10 顆，姐姐吃了 4 顆，妹妹吃了 3/10 盒，兩人一共吃了幾盒？</div>
+        答：共吃了 <input type="text" data-ans="7/10" data-pts="25"> 盒。<span></span>
+
+        <div class="q-title">2. 冰箱裡有 1 公升 200 毫升的鮮奶，喝掉 400 毫升後，還剩下幾毫升？</div>
+        答：剩下 <input type="text" data-ans="800" data-pts="25"> 毫升。<span></span>
+        
+        <button type="button" class="submit-btn" onclick="gradeQuiz(2)">第二回交卷 💯</button>
+        <div id="result-2" class="result-box"></div>
+    </div>
+
+    <div id="test-3" class="test-container">
+        <h3>一、 選擇題（每題 10 分）</h3>
+        <div class="q-title">1. 一盒雞蛋有 10 顆，哥哥用了 4 顆，是用了幾分之幾盒？</div>
+        <div class="options">
+            <label><input type="radio" name="t3_m1" value="1"> ① 4/10 顆</label>
+            <label><input type="radio" name="t3_m1" value="2"> ② 4/10 盒</label>
+            <label><input type="radio" name="t3_m1" value="3"> ③ 6/10 盒</label>
+        </div>
+        <span id="feedback-t3_m1" data-ans="2" data-pts="10"></span>
+
+        <div class="q-title">2. 299 顆糖果，每 3 顆裝成 1 袋，最多可以裝滿幾袋？</div>
+        <div class="options">
+            <label><input type="radio" name="t3_m2" value="1"> ① 98 袋</label>
+            <label><input type="radio" name="t3_m2" value="2"> ② 99 袋</label>
+            <label><input type="radio" name="t3_m2" value="3"> ③ 100 袋</label>
+        </div>
+        <span id="feedback-t3_m2" data-ans="2" data-pts="10"></span>
+
+        <h3>二、 填填看</h3>
+        <div class="q-title">1. 一條繩子平分成 9 等分，7 等分是 <input type="text" data-ans="7/9" data-pts="10"> 條。<span></span></div>
+        <div class="q-title">2. 圓的直徑是半徑的 <input type="text" data-ans="2,兩,二" data-pts="5"> 倍。如果直徑是 16 公分，半徑是 <input type="text" data-ans="8,八" data-pts="5"> 公分。<span></span><span></span></div>
+        <div class="q-title">3. 4 公升 20 毫升 = <input type="text" data-ans="4020" data-pts="10"> 毫升<span></span></div>
+
+        <h3>三、 應用題（每題 25 分）</h3>
+        <div class="q-title">1. 菜園裡 2/7 種九層塔，3/7 種番茄，剩下的種菠菜，種菠菜的地佔幾分之幾？</div>
+        答：佔 <input type="text" data-ans="2/7" data-pts="25"> 。<span></span>
+
+        <div class="q-title">2. 計算 752 ÷ 7 的商和餘數各是多少？</div>
+        答：商是 <input type="text" data-ans="107" data-pts="10">，餘數是 <input type="text" data-ans="3" data-pts="15">。<span></span><span></span>
+        
+        <button type="button" class="submit-btn" onclick="gradeQuiz(3)">第三回交卷 💯</button>
+        <div id="result-3" class="result-box"></div>
+    </div>
+
+    <script>
+        // 切換頁籤功能
+        function switchTest(testNum) {
+            // 隱藏所有測驗
+            document.querySelectorAll('.test-container').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            // 顯示選中的測驗
+            document.getElementById('test-' + testNum).classList.add('active');
+            document.getElementById('btn-' + testNum).classList.add('active');
+        }
+
+        // 自動批改功能
+        function gradeQuiz(testNum) {
+            let totalScore = 0;
+            let testDiv = document.getElementById('test-' + testNum);
+
+            // 批改填空與應用題 (text inputs)
+            let textInputs = testDiv.querySelectorAll('input[type="text"]');
+            textInputs.forEach(input => {
+                let ansArray = input.getAttribute('data-ans').split(','); // 支援多種正確寫法
+                let pts = parseInt(input.getAttribute('data-pts'));
+                let userAns = input.value.trim().replace(/\s+/g, ''); // 移除空白
+                let feedback = input.nextElementSibling; 
+
+                if (userAns === "") {
+                    feedback.innerHTML = " 👈 忘記填";
+                    feedback.className = "wrong-text";
+                } else if (ansArray.includes(userAns)) {
+                    feedback.innerHTML = " ✔️";
+                    feedback.className = "correct-text";
+                    totalScore += pts;
+                } else {
+                    feedback.innerHTML = " ❌";
+                    feedback.className = "wrong-text";
+                }
+            });
+
+            // 批改選擇題 (radio buttons)
+            let feedbackSpans = testDiv.querySelectorAll('span[id^="feedback-t"]');
+            feedbackSpans.forEach(span => {
+                let name = span.id.replace('feedback-', '');
+                let radios = testDiv.querySelectorAll(`input[name="${name}"]`);
+                if (radios.length > 0) {
+                    let correctAns = span.getAttribute('data-ans');
+                    let pts = parseInt(span.getAttribute('data-pts'));
+                    let userAns = "";
+                    
+                    radios.forEach(r => { if(r.checked) userAns = r.value; });
+
+                    if (userAns === "") {
+                        span.innerHTML = " 👈 忘記選";
+                        span.className = "wrong-text";
+                    } else if (userAns === correctAns) {
+                        span.innerHTML = " ✔️";
+                        span.className = "correct-text";
+                        totalScore += pts;
+                    } else {
+                        span.innerHTML = " ❌";
+                        span.className = "wrong-text";
+                    }
+                }
+            });
+
+            // 顯示成績結果
+            let resultDiv = document.getElementById('result-' + testNum);
+            resultDiv.style.display = "block";
+            
+            if (totalScore === 100) {
+                resultDiv.className = "result-box perfect";
+                resultDiv.innerHTML = `太厲害了！滿分 100 分！🎉<br>觀念非常清楚！`;
+            } else if (totalScore >= 80) {
+                resultDiv.className = "result-box good";
+                resultDiv.innerHTML = `表現很棒喔！總分：${totalScore} 分。<br>把紅色的地方再檢查一下！💪`;
+            } else {
+                resultDiv.className = "result-box keep-going";
+                resultDiv.innerHTML = `總分：${totalScore} 分。<br>沒關係，看看是哪邊不小心算錯了呢？✏️`;
+            }
+        }
+    </script>
+</body>
+</html>
